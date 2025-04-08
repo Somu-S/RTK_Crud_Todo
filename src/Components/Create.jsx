@@ -20,10 +20,9 @@ export const Create = () => {
     e.preventDefault();
 
     //find the max id in the users array
-    const nextId = users.length > 0 ? Math.max(...users.map((user) => user.id)) + 1 : 1;
 
     const newUser ={
-      id: nextId,
+      id: crypto.randomUUID(),
       name,
       email,
     }

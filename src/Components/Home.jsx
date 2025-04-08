@@ -1,10 +1,13 @@
-import React, { useEffect } from 'react'
+import {useState,useEffect} from 'react'
 import { Link } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { deleteUsers } from '../Redux/UserReducer'
 import { fetchUsers } from '../Redux/UserReducer'
 
+
 export const Home = () => {
+  const [search, setSearch] = useState('')
+  console.log(search)
   const users = useSelector((state)=> state.users.users)
   const dispatch = useDispatch();
   console.log(users)
@@ -14,15 +17,32 @@ export const Home = () => {
   },[]);
 
   const handleDelete = (id) =>{
-    dispatch(deleteUsers(Number(id)));
+    dispatch(deleteUsers(id));
   }
 
+  const filteredUsers = users.filter((user)=>
+    user.name.toLowerCase().includes(search.toLowerCase()) ||
+    user.email.toLowerCase().includes(search.toLowerCase())
+  );
+
   return (
-    <div className="container mx-auto mt-8 m-10">
+    <div className="container mx-auto mt-8 m-10 p-">
       <h2 className="text-2xl font-bold mb-5">Simple Crud App With Redux</h2>
+      <div className='flex justify-between items-center'>
       <Link to="/create" className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded mb-5 inline-block">
         Create +
       </Link>
+      <div>
+        <input
+        type="text"
+        name='search'
+        onChange={(e)=> setSearch(e.target.value)}
+        value={search}
+        placeholder='Search...'
+        className='border border-gray-800 rounded px-4 py-2 mb-5 ml-5'
+        />
+      </div>
+      </div>
       <table className="table-auto w-full border-collapse border border-gray-300">
         <thead>
           <tr className="bg-gray-200">
@@ -33,9 +53,9 @@ export const Home = () => {
           </tr>
         </thead>
         <tbody>
-          {users && users.length > 0 ? (users.map((user) => (
+          {filteredUsers && filteredUsers.length > 0 ? (filteredUsers.map((user,index) => (
              <tr key={user.id}>
-             <td className="border border-gray-300 px-4 py-2">{user.id}</td>
+             <td className="border border-gray-300 px-4 py-2">{index + 1}</td>
              <td className="border border-gray-300 px-4 py-2">{user.name}</td>
              <td className="border border-gray-300 px-4 py-2">{user.email}</td>
              <td className="border border-gray-300 px-4 py-2">

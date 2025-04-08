@@ -16,13 +16,13 @@ export const addUsers = createAsyncThunk("users/addUsers", async(newUser)=>{
 })
 
 export const updateUsers = createAsyncThunk("users/updateUsers",async(updateUser)=>{
-    const response = await axios.put(`${Api_URL}/${Number(updateUser.id)}`,updateUser);
+    const response = await axios.put(`${Api_URL}/${(updateUser.id)}`,updateUser);
     return response.data;
 })
 
 export const deleteUsers = createAsyncThunk("users/deleteUsers",async(id)=>{
     console.log("Deleting user with ID:", id);
-    await axios.delete(`${Api_URL}/${Number(id)}`);
+    await axios.delete(`${Api_URL}/${(id)}`);
     return id;
 })
 
